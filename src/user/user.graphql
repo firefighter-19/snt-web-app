@@ -1,0 +1,25 @@
+type Query {
+  getUsers: [User]
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User
+}
+
+scalar Date
+
+type User {
+  userId: String!
+  name: String!
+  lastName: String!
+  siteNumber: Int!
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateUserInput {
+  userId: String!
+  name: String!
+  lastName: String!
+  siteNumber: Int!
+}
