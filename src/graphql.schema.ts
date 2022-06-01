@@ -14,6 +14,14 @@ export class CreateUserInput {
     siteNumber: number;
 }
 
+export class UpdateUserInput {
+    userId: string;
+}
+
+export class DeleteUserInput {
+    userId: string;
+}
+
 export abstract class IQuery {
     __typename?: 'IQuery';
 

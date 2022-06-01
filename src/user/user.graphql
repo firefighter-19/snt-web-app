@@ -23,3 +23,11 @@ input CreateUserInput {
   lastName: String!
   siteNumber: Int!
 }
+
+input UpdateUserInput {
+  userId: String!
+}
+
+input DeleteUserInput {
+  userId: String!
+}
