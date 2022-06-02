@@ -10,24 +10,21 @@ import {
 @ObjectType()
 @Entity('users')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Field(() => ID)
-  @Column()
-  userId: string;
+  @PrimaryGeneratedColumn('uuid')
+  public id!: string;
 
   @Field()
   @Column()
-  name: string;
+  public name: string;
 
   @Field()
   @Column()
-  lastName: string;
+  public lastName: string;
 
   @Field()
   @Column()
-  siteNumber: number;
+  public siteNumber: number;
 
   @Field()
   @CreateDateColumn()

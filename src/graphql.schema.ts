@@ -8,35 +8,43 @@
 /* tslint:disable */
 /* eslint-disable */
 export class CreateUserInput {
-    userId: string;
     name: string;
     lastName: string;
     siteNumber: number;
 }
 
 export class UpdateUserInput {
-    userId: string;
+    id: string;
+    name?: Nullable<string>;
+    lastName?: Nullable<string>;
+    siteNumber?: Nullable<number>;
 }
 
 export class DeleteUserInput {
-    userId: string;
+    ids: string[];
 }
 
 export abstract class IQuery {
     __typename?: 'IQuery';
 
     abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+
+    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {
     __typename?: 'IMutation';
 
-    abstract createUser(createUserInput: CreateUserInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract createUser(createUser: CreateUserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUser(updateUser: UpdateUserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract deleteUsers(deleteUser: string[]): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
 }
 
 export class User {
     __typename?: 'User';
-    userId: string;
+    id: string;
     name: string;
     lastName: string;
     siteNumber: number;

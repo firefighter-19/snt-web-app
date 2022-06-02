@@ -1,15 +1,16 @@
 type Query {
   getUsers: [User]
+  getUser(id: String!): User
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User
+  createUser(createUser: CreateUserInput!): User
+  updateUser(updateUser: UpdateUserInput!): User
+  deleteUsers(deleteUser: [String!]!): [String]
 }
 
-scalar Date
-
 type User {
-  userId: String!
+  id: ID!
   name: String!
   lastName: String!
   siteNumber: Int!
@@ -17,17 +18,20 @@ type User {
   updatedAt: Date
 }
 
+scalar Date
+
 input CreateUserInput {
-  userId: String!
   name: String!
   lastName: String!
   siteNumber: Int!
 }
 
 input UpdateUserInput {
-  userId: String!
+  id: ID!
+  name: String
+  lastName: String
+  siteNumber: Int
 }
-
 input DeleteUserInput {
-  userId: String!
+  ids: [ID!]!
 }

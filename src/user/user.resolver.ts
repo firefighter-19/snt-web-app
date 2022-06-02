@@ -1,23 +1,39 @@
+import { UserEntity } from './user.entity';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from '../graphql.schema';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Resolver('User')
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query('getUsers')
-  async getUsers() {
-    const users = await this.userService.getAllUsers();
-    return users;
+  @Query(() => UserEntity)
+  async getUsers(): Promise<UserEntity[]> {
+    return await this.userService.getAllUsers();
   }
 
-  @Mutation('createUser')
+  @Query(() => UserEntity)
+  async getUser(@Args('getUser') id: string): Promise<UserEntity> {
+    return await this.userService.getOneUser(id);
+  }
+
+  @Mutation(() => UserEntity)
   async createUser(
-    @Args('createUserInput') userData: CreateUserDto,
-  ): Promise<User> {
-    const createdUser = await this.userService.createUser(userData);
-    return createdUser;
+    @Args('createUser') userData: CreateUserDto,
+  ): Promise<UserEntity> {
+    return await this.userService.createUser(userData);
+  }
+
+  @Mutation(() => UserEntity)
+  async updateUser(
+    @Args('updateUser') userData: UpdateUserDto,
+  ): Promise<UserEntity> {
+    return await this.userService.updateUser(userData);
+  }
+
+  @Mutation(() => UserEntity)
+  async deleteUsers(@Args('deleteUser') ids: string[]): Promise<string[]> {
+    return await this.userService.deleteUsers(ids);
   }
 }
