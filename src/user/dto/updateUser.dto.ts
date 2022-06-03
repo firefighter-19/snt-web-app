@@ -4,11 +4,11 @@ import { UpdateUserInput } from '../../graphql.schema';
 @InputType()
 export class UpdateUserDto extends UpdateUserInput {
   @Field()
-  userId: string;
+  readonly userId: string;
 
   @Field()
-  name: string;
+  readonly name: string;
 
   @Field()
-  lastName: string;
+  readonly lastName: string;
 }
