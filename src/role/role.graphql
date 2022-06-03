@@ -1,0 +1,23 @@
+type Mutation {
+  createRole(createRole: CreateRoleInput!): Role
+}
+
+type Query {
+  getRole(getRole: ID!): Role
+}
+
+enum RoleType {
+  ADMIN
+  CITIZEN
+  GUARD
+}
+
+type Role {
+  id: ID!
+  role: RoleType!
+  users: User
+}
+
+input CreateRoleInput {
+  role: RoleType!
+}
