@@ -1,3 +1,4 @@
+import { RoleEntity } from './../role/entities/role.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Entity,
@@ -5,7 +6,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { RoleType } from '../graphql.schema';
 
 @ObjectType()
 @Entity('users')
@@ -26,7 +30,10 @@ export class UserEntity {
   @Column()
   public siteNumber: number;
 
-  @Field()
+  @ManyToMany(() => RoleEntity, (role) => role.users)
+  @JoinTable({ name: 'user_roles' })
+  public role: RoleType[];
+
   @CreateDateColumn()
   createdAt: Date;
 

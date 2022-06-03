@@ -7,6 +7,7 @@ type Mutation {
   createUser(createUser: CreateUserInput!): User
   updateUser(updateUser: UpdateUserInput!): User
   deleteUsers(deleteUser: [String!]!): [String]
+  addRole(addRole: AddRoleInput!): User
 }
 
 type User {
@@ -16,6 +17,7 @@ type User {
   siteNumber: Int!
   createdAt: Date
   updatedAt: Date
+  role: [Role]
 }
 
 scalar Date
@@ -24,6 +26,12 @@ input CreateUserInput {
   name: String!
   lastName: String!
   siteNumber: Int!
+  role: RoleType
+}
+
+input AddRoleInput {
+  userId: ID!
+  roleId: ID!
 }
 
 input UpdateUserInput {
@@ -32,6 +40,7 @@ input UpdateUserInput {
   lastName: String
   siteNumber: Int
 }
+
 input DeleteUserInput {
   ids: [ID!]!
 }
