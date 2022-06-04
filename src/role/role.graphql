@@ -15,7 +15,6 @@ enum RoleType {
 type Role {
   id: ID!
   role: RoleType!
-  users: User
 }
 
 input CreateRoleInput {

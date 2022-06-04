@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserEntity } from './user.entity';
 import { AddRoleDto } from './dto/addRole.dto';
+import { RoleType } from '../graphql.schema';
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,14 @@ export class UserService {
   }
 
   public async createUser(userData: CreateUserDto): Promise<UserEntity> {
-    return await this.usersRepository.save({ ...userData });
+    const user = await this.usersRepository.save({ ...userData });
+    const citizen = await this.roleRepository.findOne({
+      role: RoleType.CITIZEN,
+    });
+    citizen.users = [user];
+    await this.roleRepository.save(citizen);
+    user.role = [citizen.role];
+    return user;
   }
 
   public async updateUser(userData: UpdateUserDto): Promise<UserEntity> {
@@ -37,19 +45,18 @@ export class UserService {
     return await this.getOneUser(userData.id);
   }
 
-  public async addRole(role: AddRoleDto): Promise<any> {
+  public async addRole(role: AddRoleDto): Promise<UserEntity> {
     const user = await this.getOneUser(role.userId);
     const roleName = await this.roleRepository.findOne(role.roleId, {
       relations: ['users'],
     });
-
-    roleName.users = [user];
-    await this.roleRepository.save(roleName);
-
-    // const result = await this.usersRepository.save({
-    //   ...user,
-    //   role: [roleName.role],
-    // });
+    const roleExist = user.role.includes(roleName.role);
+    if (!roleExist) {
+      roleName.users = [user];
+      await this.roleRepository.save(roleName);
+      return { ...user, role: [...user.role, roleName.role] };
+    }
+    return user;
   }
 
   public async deleteUsers(ids: string[]): Promise<string[]> {

@@ -68,7 +68,6 @@ export class Role {
     __typename?: 'Role';
     id: string;
     role: RoleType;
-    users?: Nullable<User>;
 }
 
 export class User {
