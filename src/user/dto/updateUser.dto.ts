@@ -12,5 +12,8 @@ export class UpdateUserDto {
   readonly lastName: string;
 
   @Field()
-  roleId: string;
+  readonly siteNumber: string;
+
+  @Field()
+  readonly roleId: string;
 }

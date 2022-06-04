@@ -5,8 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserEntity } from './user.entity';
-import { RoleType } from '../graphql.schema';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { RoleType } from '../graphql.schema'; //TODO Is it critical to have here in service layer such import?
 
 @Injectable()
 export class UserService {
@@ -40,19 +40,22 @@ export class UserService {
   }
 
   public async updateUser(userData: UpdateUserDto): Promise<UserEntity> {
-    const user = Object.keys(userData).reduce((acc, cur) => {
-      if (cur !== 'roleId') {
-        acc[cur] = userData[cur];
-      }
-      return acc;
-    }, {});
-    await this.usersRepository.update(
-      { id: userData.id },
-      {
-        ...user,
-      },
-    );
-    return this.addRole({ userId: userData.id, roleId: userData.roleId });
+    const checkUser = await this.getOneUser(userData.id);
+    if (userData.id === checkUser.id) {
+      const user = Object.keys(userData).reduce((acc, cur) => {
+        if (cur !== 'roleId') {
+          acc[cur] = userData[cur];
+        }
+        return acc;
+      }, {});
+      await this.usersRepository.update(
+        { id: userData.id },
+        {
+          ...user,
+        },
+      );
+      return this.addRole({ userId: userData.id, roleId: userData.roleId });
+    }
   }
 
   private async addRole(userInfo: AddRoleDto): Promise<UserEntity> {

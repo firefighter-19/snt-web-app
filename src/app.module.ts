@@ -6,6 +6,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { RoleModule } from './role/role.module';
+import { AuthResolver } from './auth/auth.resolver';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,11 +30,12 @@ import { RoleModule } from './role/role.module';
       database: process.env.DB_NAME,
       synchronize: true,
       autoLoadEntities: true,
-      // entities: [UserEntity, RoleEntity, UserRoleEntity]
     }),
     UserModule,
     AdminModule,
     RoleModule,
+    AuthModule,
   ],
+  providers: [AuthResolver, AuthService],
 })
 export class AppModule {}
