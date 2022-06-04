@@ -1,14 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { UpdateUserInput } from '../../graphql.schema';
 
 @InputType()
-export class UpdateUserDto extends UpdateUserInput {
+export class UpdateUserDto {
   @Field()
-  readonly userId: string;
+  readonly id!: string;
 
   @Field()
   readonly name: string;
 
   @Field()
   readonly lastName: string;
+
+  @Field()
+  roleId: string;
 }

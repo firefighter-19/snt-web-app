@@ -30,14 +30,17 @@ export class UserEntity {
   @Column()
   public siteNumber: number;
 
-  @ManyToMany(() => RoleEntity, (role) => role.users)
+  @ManyToMany(() => RoleEntity, (role) => role.users, {
+    eager: true,
+  })
   @JoinTable({ name: 'user_roles' })
   public role: RoleType[];
 
+  @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  public createdAt: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  public updatedAt: Date;
 }

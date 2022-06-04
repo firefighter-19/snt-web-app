@@ -21,7 +21,6 @@ export class CreateUserInput {
     name: string;
     lastName: string;
     siteNumber: number;
-    role?: Nullable<RoleType>;
 }
 
 export class AddRoleInput {
@@ -34,6 +33,7 @@ export class UpdateUserInput {
     name?: Nullable<string>;
     lastName?: Nullable<string>;
     siteNumber?: Nullable<number>;
+    roleId: string;
 }
 
 export class DeleteUserInput {

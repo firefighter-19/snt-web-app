@@ -1,11 +1,10 @@
 import { RoleType } from './../../graphql.schema';
-// import { UserRoleEntity } from './user-role.entity';
 import { UserEntity } from '../../user/user.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @ObjectType()
-@Entity('role')
+@Entity('roles')
 export class RoleEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')

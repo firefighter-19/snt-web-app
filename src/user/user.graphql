@@ -1,12 +1,12 @@
 type Query {
   getUsers: [User]
-  getUser(id: String!): User
+  getUser(id: ID!): User
 }
 
 type Mutation {
   createUser(createUser: CreateUserInput!): User
   updateUser(updateUser: UpdateUserInput!): User
-  deleteUsers(deleteUser: [String!]!): [String]
+  deleteUsers(deleteUser: [ID!]!): [String]
   addRole(addRole: AddRoleInput!): User
 }
 
@@ -26,7 +26,6 @@ input CreateUserInput {
   name: String!
   lastName: String!
   siteNumber: Int!
-  role: RoleType
 }
 
 input AddRoleInput {
@@ -39,6 +38,7 @@ input UpdateUserInput {
   name: String
   lastName: String
   siteNumber: Int
+  roleId: ID!
 }
 
 input DeleteUserInput {
