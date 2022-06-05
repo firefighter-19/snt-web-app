@@ -20,6 +20,14 @@ export class UserEntity {
 
   @Field()
   @Column()
+  public email!: string;
+
+  @Field()
+  @Column()
+  public password!: string;
+
+  @Field()
+  @Column()
   public name: string;
 
   @Field()

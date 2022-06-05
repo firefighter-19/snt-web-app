@@ -18,6 +18,8 @@ export class CreateRoleInput {
 }
 
 export class CreateUserInput {
+    email: string;
+    password: string;
     name: string;
     lastName: string;
     siteNumber: number;
@@ -30,6 +32,7 @@ export class RoleInput {
 
 export class UpdateUserInput {
     id: string;
+    email?: Nullable<string>;
     name?: Nullable<string>;
     lastName?: Nullable<string>;
     siteNumber?: Nullable<number>;
@@ -44,7 +47,7 @@ export abstract class IMutation {
 
     abstract createRole(createRole: CreateRoleInput): Nullable<Role> | Promise<Nullable<Role>>;
 
-    abstract createUser(createUser: CreateUserInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract registration(createUser: CreateUserInput): Token | Promise<Token>;
 
     abstract updateUser(updateUser: UpdateUserInput): Nullable<User> | Promise<Nullable<User>>;
 
@@ -74,12 +77,19 @@ export class Role {
 export class User {
     __typename?: 'User';
     id: string;
+    email: string;
+    password: string;
     name: string;
     lastName: string;
     siteNumber: number;
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;
     role?: Nullable<Nullable<Role>[]>;
+}
+
+export class Token {
+    __typename?: 'Token';
+    token: string;
 }
 
 type Nullable<T> = T | null;

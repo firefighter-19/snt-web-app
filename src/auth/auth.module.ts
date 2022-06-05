@@ -11,7 +11,10 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([UserEntity]),
     UserModule,
     JwtModule.register({
-      secret: process.env.PRIVATE_KEY,
+      secret: process.env.PRIVATE_KEY || 'SECRET',
+      signOptions: {
+        expiresIn: '48h',
+      },
     }),
   ],
   providers: [AuthResolver, AuthService],
