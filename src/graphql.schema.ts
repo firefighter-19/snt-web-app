@@ -23,7 +23,7 @@ export class CreateUserInput {
     siteNumber: number;
 }
 
-export class AddRoleInput {
+export class RoleInput {
     userId: string;
     roleId: string;
 }
@@ -33,7 +33,6 @@ export class UpdateUserInput {
     name?: Nullable<string>;
     lastName?: Nullable<string>;
     siteNumber?: Nullable<number>;
-    roleId: string;
 }
 
 export class DeleteUserInput {
@@ -51,7 +50,9 @@ export abstract class IMutation {
 
     abstract deleteUsers(deleteUser: string[]): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
 
-    abstract addRole(addRole: AddRoleInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract addRole(addRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract removeRole(removeRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IQuery {

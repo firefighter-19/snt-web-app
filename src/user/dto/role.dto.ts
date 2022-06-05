@@ -1,7 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class AddRoleDto {
+export class roleDto {
   @Field(() => ID)
   public userId!: string;
 

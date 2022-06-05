@@ -9,7 +9,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { RoleType } from '../graphql.schema';
+import { Role } from '../graphql.schema';
 
 @ObjectType()
 @Entity('users')
@@ -34,7 +34,7 @@ export class UserEntity {
     eager: true,
   })
   @JoinTable({ name: 'user_roles' })
-  public role: RoleType[];
+  public role: Role[];
 
   @Field()
   @CreateDateColumn()

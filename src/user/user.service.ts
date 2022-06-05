@@ -1,4 +1,4 @@
-import { AddRoleDto } from './dto/addRole.dto';
+import { roleDto } from './dto/role.dto';
 import { RoleEntity } from './../role/entities/role.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -33,39 +33,48 @@ export class UserService {
       const user = await this.usersRepository.save({ ...userData });
       citizen.users = [user];
       await this.roleRepository.save(citizen);
-      user.role = [citizen.role];
+      user.role = [{ id: citizen.id, role: citizen.role }];
       return user;
     }
     //TODO Need to solve problem with no existing role; Create error solver;
   }
 
   public async updateUser(userData: UpdateUserDto): Promise<UserEntity> {
-    const checkUser = await this.getOneUser(userData.id);
-    if (userData.id === checkUser.id) {
-      const user = Object.keys(userData).reduce((acc, cur) => {
-        if (cur !== 'roleId') {
-          acc[cur] = userData[cur];
-        }
-        return acc;
-      }, {});
-      await this.usersRepository.update(
-        { id: userData.id },
-        {
-          ...user,
-        },
-      );
-      return this.addRole({ userId: userData.id, roleId: userData.roleId });
-    }
+    await this.usersRepository.update(
+      { id: userData.id },
+      {
+        ...userData,
+      },
+    );
+    return await this.getOneUser(userData.id);
   }
 
-  private async addRole(userInfo: AddRoleDto): Promise<UserEntity> {
-    const user = await this.getOneUser(userInfo.userId);
-    const roleName = await this.roleRepository.findOne(userInfo.roleId);
-    const roleExist = user.role.includes(roleName.role);
+  public async addRole(roleData: roleDto): Promise<UserEntity> {
+    const user = await this.getOneUser(roleData.userId);
+    const roleName = await this.roleRepository.findOne(roleData.roleId);
+    const roleExist = user.role.find((role) => role.role === roleName.role);
     if (!roleExist) {
       roleName.users = [user];
       await this.roleRepository.save(roleName);
-      return { ...user, role: [...user.role, roleName.role] };
+      return {
+        ...user,
+        role: [...user.role, { id: roleName.id, role: roleName.role }],
+      };
+    }
+    return user;
+  }
+
+  public async removeRole(roleData: roleDto): Promise<UserEntity> {
+    const user = await this.getOneUser(roleData.userId);
+    const roleName = await this.roleRepository.findOne(roleData.roleId);
+    const roleExist = user.role.find((role) => role.role === roleName.role);
+    if (roleExist) {
+      roleName.users = [user];
+      await this.roleRepository.delete(roleName);
+      return {
+        ...user,
+        role: user.role.filter((role) => role.role !== roleName.role),
+      };
     }
     return user;
   }

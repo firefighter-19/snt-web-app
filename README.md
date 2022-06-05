@@ -32,6 +32,12 @@
 $ npm install
 ```
 
+## Generate GraphQL types
+
+```bash
+$ npm run gen:types
+```
+
 ## Running the app
 
 ```bash
