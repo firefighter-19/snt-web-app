@@ -1,6 +1,7 @@
 type Query {
   getUsers: [User]
   getUser(id: ID!): User
+  loginUser(userData: LoginUser!): User
 }
 
 type Mutation {
@@ -35,6 +36,11 @@ input CreateUserInput {
   name: String!
   lastName: String!
   siteNumber: Int!
+}
+
+input LoginUser {
+  email: String!
+  password: String!
 }
 
 input RoleInput {

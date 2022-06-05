@@ -1,10 +1,15 @@
-import { Token } from './../graphql.schema';
+import { LoginUser, Token } from './../graphql.schema';
 import { UserEntity } from './../user/user.entity';
 import { CreateUserDto } from './../user/dto/createUser.dto';
 import { UserService } from './../user/user.service';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +17,16 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
+
+  public async loginUser(userData: LoginUser): Promise<UserEntity> {
+    const user = await this.userService.getUserByEmail(userData.email);
+    const checkPassword = await compare(user.password, userData.password);
+
+    if (user && checkPassword) {
+      return user;
+    }
+    throw new UnauthorizedException({ message: 'Incorrect email or password' });
+  }
 
   public async registration(userData: CreateUserDto): Promise<Token> {
     const userExist = await this.userService.getUserByEmail(userData.email);

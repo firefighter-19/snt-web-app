@@ -25,6 +25,11 @@ export class CreateUserInput {
     siteNumber: number;
 }
 
+export class LoginUser {
+    email: string;
+    password: string;
+}
+
 export class RoleInput {
     userId: string;
     roleId: string;
@@ -66,6 +71,8 @@ export abstract class IQuery {
     abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class Role {
