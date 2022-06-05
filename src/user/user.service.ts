@@ -1,4 +1,4 @@
-import { roleDto } from './dto/role.dto';
+import { updateRoleDto } from './dto/updateRole.dto';
 import { RoleEntity } from './../role/entities/role.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,7 +49,7 @@ export class UserService {
     return await this.getOneUser(userData.id);
   }
 
-  public async addRole(roleData: roleDto): Promise<UserEntity> {
+  public async addRole(roleData: updateRoleDto): Promise<UserEntity> {
     const user = await this.getOneUser(roleData.userId);
     const roleName = await this.roleRepository.findOne(roleData.roleId);
     const roleExist = user.role.find((role) => role.role === roleName.role);
@@ -64,7 +64,7 @@ export class UserService {
     return user;
   }
 
-  public async removeRole(roleData: roleDto): Promise<UserEntity> {
+  public async removeRole(roleData: updateRoleDto): Promise<UserEntity> {
     const user = await this.getOneUser(roleData.userId);
     const roleName = await this.roleRepository.findOne(roleData.roleId);
     const roleExist = user.role.find((role) => role.role === roleName.role);
