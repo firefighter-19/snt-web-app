@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
+import { MailService } from './mail/mail.service';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { AuthModule } from './auth/auth.module';
     AdminModule,
     RoleModule,
     AuthModule,
+    MailModule,
   ],
+  providers: [MailService],
 })
 export class AppModule {}

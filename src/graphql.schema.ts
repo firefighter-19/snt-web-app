@@ -47,6 +47,12 @@ export class DeleteUserInput {
     ids: string[];
 }
 
+export class ActivationLink {
+    __typename?: 'ActivationLink';
+    email: string;
+    link: string;
+}
+
 export abstract class IMutation {
     __typename?: 'IMutation';
 

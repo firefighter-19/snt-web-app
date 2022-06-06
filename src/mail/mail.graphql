@@ -1,0 +1,4 @@
+type ActivationLink {
+  email: String!
+  link: String!
+}
