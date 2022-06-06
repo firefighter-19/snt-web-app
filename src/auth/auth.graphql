@@ -1,0 +1,8 @@
+type Query {
+  getRefreshToken(accessToken: String!): String!
+}
+
+type Token {
+  accessToken: String!
+  refreshToken: String!
+}

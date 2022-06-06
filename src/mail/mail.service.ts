@@ -21,10 +21,10 @@ export class MailService {
       from: process.env.SMTP_USER,
       to: data.email,
       subject: 'Активация аккаунта на ' + process.env.API_URL,
-      text: '',
+      text: 'Подтверждение электронной почты',
       html: `
         <div>
-          <h1>Для активации перейдите по ссылке</h1>
+          <h1>Для подтверждения электронной почты перейдите по ссылке</h1>
           <a href="${data.link}">${data.link}</a>
         </div>
       `,

@@ -47,6 +47,26 @@ export class DeleteUserInput {
     ids: string[];
 }
 
+export abstract class IQuery {
+    __typename?: 'IQuery';
+
+    abstract getRefreshToken(accessToken: string): string | Promise<string>;
+
+    abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
+
+    abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+
+    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class Token {
+    __typename?: 'Token';
+    accessToken: string;
+    refreshToken: string;
+}
+
 export class ActivationLink {
     __typename?: 'ActivationLink';
     email: string;
@@ -69,18 +89,6 @@ export abstract class IMutation {
     abstract removeRole(removeRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export abstract class IQuery {
-    __typename?: 'IQuery';
-
-    abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
-
-    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
-}
-
 export class Role {
     __typename?: 'Role';
     id: string;
@@ -98,11 +106,7 @@ export class User {
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;
     role?: Nullable<Nullable<Role>[]>;
-}
-
-export class Token {
-    __typename?: 'Token';
-    token: string;
+    refreshToken: string;
 }
 
 type Nullable<T> = T | null;

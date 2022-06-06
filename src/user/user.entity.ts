@@ -8,8 +8,11 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Role } from '../graphql.schema';
+import { AuthEntity } from '../auth/auth.entity';
 
 @ObjectType()
 @Entity('users')
@@ -38,12 +41,6 @@ export class UserEntity {
   @Column()
   public siteNumber: number;
 
-  @ManyToMany(() => RoleEntity, (role) => role.users, {
-    eager: true,
-  })
-  @JoinTable({ name: 'user_roles' })
-  public role: Role[];
-
   @Field()
   @CreateDateColumn()
   public createdAt: Date;
@@ -51,4 +48,14 @@ export class UserEntity {
   @Field()
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  @ManyToMany(() => RoleEntity, (role) => role.users, {
+    eager: true,
+  })
+  @JoinTable({ name: 'user_roles' })
+  public role: Role[];
+
+  @OneToOne(() => AuthEntity, (token) => token.refreshToken)
+  @JoinColumn()
+  public refreshToken!: string;
 }
