@@ -11,7 +11,7 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => UserEntity)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   async getUsers(): Promise<UserEntity[]> {
     return await this.userService.getAllUsers();
   }
