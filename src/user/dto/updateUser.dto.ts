@@ -13,4 +13,10 @@ export class UpdateUserDto {
 
   @Field()
   readonly siteNumber: number;
+
+  @Field()
+  readonly email: string;
+
+  @Field()
+  readonly password: string;
 }

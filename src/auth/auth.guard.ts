@@ -1,43 +1,39 @@
-import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
 import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-// import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class AuthGuard {
-  constructor(private jwtService: JwtService) {}
+  constructor(private authService: AuthService) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const ctx = GqlExecutionContext.create(context);
+    const request: Request = ctx.getContext().req;
     return this.validateRequest(request);
   }
 
-  // getRequest(context: ExecutionContext) {
-  //   console.log('123 ===========>: ', 123);
-  //   const ctx = GqlExecutionContext.create(context);
-  //   const request = ctx.getContext().req;
-  //   return this.validateRequest(request);
-  // }
-
-  validateRequest(request: Request): boolean {
+  public async validateRequest(request: any): Promise<any> {
     try {
-      const result = request.headers.get('Authorization');
-      const bearer = result.split(' ')[0];
-      const token = result.split(' ')[1];
-      if (bearer !== 'Bearer' || !token) {
-        throw new UnauthorizedException({
-          message: 'User is not authorized',
-        });
-      }
-      const user = this.jwtService.verify(token);
-      console.log('user ===========>: ', user);
-      return true;
+      const result = request.headers.authorization;
+      // const bearer = result.split(' ')[0];
+      // const token = result.split(' ')[1];
+      console.log(result);
+      // if (bearer !== 'Bearer' || !token) {
+      //   throw new UnauthorizedException({
+      //     message: 'User is not authorized',
+      //   });
+      // }
+      // const user = this.jwtService.verify(token);
+      // console.log('user ===========>: ', user);
+      // return true;
     } catch (e) {
+      console.log('e ===========>: ', e);
       throw new UnauthorizedException({
         message: 'User is not authorized',
       });

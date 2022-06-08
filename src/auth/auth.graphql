@@ -6,3 +6,13 @@ type Token {
   accessToken: String!
   refreshToken: String!
 }
+
+type RefreshToken {
+  userId: ID!
+  refreshToken: String!
+}
+
+input RefreshTokenInput {
+  userId: ID!
+  refreshToken: String!
+}

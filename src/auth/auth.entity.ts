@@ -1,18 +1,31 @@
+import { UserEntity } from './../user/user.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { UserEntity } from '../user/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @ObjectType()
-@Entity()
+@Entity('auth')
 export class AuthEntity {
   @Field()
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   public id!: string;
-
-  @OneToOne(() => UserEntity, (user) => user.id)
-  public user: UserEntity;
 
   @Field()
   @Column()
   public refreshToken!: string;
+
+  @Field()
+  @Column()
+  public userId: string;
+
+  @OneToOne(() => UserEntity, (user) => user.token, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  public user!: UserEntity;
 }

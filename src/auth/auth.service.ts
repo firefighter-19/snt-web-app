@@ -37,7 +37,7 @@ export class AuthService {
     const userExist = await this.userService.getUserByEmail(userData.email);
     if (userExist) {
       throw new HttpException(
-        `User with email ${userData.email} already exists`,
+        `User with email ${userData.email}hash already exists`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -47,23 +47,55 @@ export class AuthService {
       password: hashPassword,
     });
 
-    const tokens = await this.generateUserToken(user);
-    user.refreshToken = tokens.refreshToken;
-    await this.authRepository.save(user);
+    const tokens = this.generateUserToken(user);
+    await this.authRepository.save({
+      refreshToken: tokens.refreshToken,
+      userId: user.id,
+    });
     return tokens;
   }
 
-  private async generateUserToken(user: UserEntity): Promise<Token> {
+  private generateUserToken(user: UserEntity): Token {
     const userInfo = { id: user.id, email: user.email, role: user.role };
     return {
       accessToken: this.jwtService.sign(userInfo, {
-        secret: process.env.ACCESS_TOKEN,
+        secret: process.env.ACCESS_TOKEN || 'ACCESS',
         expiresIn: '1h',
       }),
       refreshToken: this.jwtService.sign(userInfo, {
-        secret: process.env.REFRESH_TOKEN,
+        secret: process.env.REFRESH_TOKEN || 'PRIVATE',
         expiresIn: '30d',
       }),
     };
+  }
+
+  public validateAccessToken(accessToken: string): UserEntity {
+    try {
+      const user = this.jwtService.verify(accessToken);
+      return user;
+    } catch (e) {
+      throw new UnauthorizedException({
+        message: 'User is not authorized',
+      });
+    }
+  }
+
+  public async validateRefreshToken(refreshToken: string): Promise<Token> {
+    try {
+      const user = this.jwtService.verify(refreshToken);
+      if (!user) {
+        throw new UnauthorizedException({
+          message: 'User is not authorized',
+        });
+      }
+      const tokens = this.generateUserToken(user);
+      user.refreshToken = tokens.refreshToken;
+      await this.authRepository.update({ id: user.id }, { ...user });
+      return tokens;
+    } catch (e) {
+      throw new UnauthorizedException({
+        message: 'User is not authorized',
+      });
+    }
   }
 }

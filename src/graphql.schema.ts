@@ -13,6 +13,11 @@ export enum RoleType {
     GUARD = "GUARD"
 }
 
+export class RefreshTokenInput {
+    userId: string;
+    refreshToken: string;
+}
+
 export class CreateRoleInput {
     role: RoleType;
 }
@@ -67,6 +72,12 @@ export class Token {
     refreshToken: string;
 }
 
+export class RefreshToken {
+    __typename?: 'RefreshToken';
+    userId: string;
+    refreshToken: string;
+}
+
 export class ActivationLink {
     __typename?: 'ActivationLink';
     email: string;
@@ -106,7 +117,7 @@ export class User {
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;
     role?: Nullable<Nullable<Role>[]>;
-    refreshToken: string;
+    token: RefreshToken;
 }
 
 type Nullable<T> = T | null;

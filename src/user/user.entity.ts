@@ -1,4 +1,3 @@
-import { RoleEntity } from './../role/entities/role.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Entity,
@@ -9,10 +8,9 @@ import {
   ManyToMany,
   JoinTable,
   OneToOne,
-  JoinColumn,
 } from 'typeorm';
-import { Role } from '../graphql.schema';
 import { AuthEntity } from '../auth/auth.entity';
+import { RoleEntity } from './../role/entities/role.entity';
 
 @ObjectType()
 @Entity('users')
@@ -49,13 +47,10 @@ export class UserEntity {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @ManyToMany(() => RoleEntity, (role) => role.users, {
-    eager: true,
-  })
+  @ManyToMany(() => RoleEntity, (role) => role.users)
   @JoinTable({ name: 'user_roles' })
-  public role: Role[];
+  public role: RoleEntity[];
 
-  @OneToOne(() => AuthEntity, (token) => token.refreshToken)
-  @JoinColumn()
-  public refreshToken!: string;
+  @OneToOne(() => AuthEntity, (token) => token.user)
+  public token!: AuthEntity;
 }
