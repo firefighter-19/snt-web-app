@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard {
@@ -18,27 +19,22 @@ export class AuthGuard {
     return this.validateRequest(request);
   }
 
-  public async validateRequest(request: any): Promise<any> {
-    console.log('request ===========>: ', request.headers.authorization);
+  public async validateRequest(request: Request): Promise<any> {
     try {
       const headerData = request.headers.authorization;
-      console.log('request.http.headers ===========>: ', headerData);
-      const [bearer, token] = headerData.split(' ');
-      const verifyAccessToken = this.authService.validateAccessToken(token);
-      // if (!verifyAccessToken) {
-      //   const verifyRefreshToken = this.authService.validateRefreshToken(
-      //     request.cookie('refreshToken'),
-      //   );
-      //   if (!verifyRefreshToken)
-      //     throw new UnauthorizedException({
-      //       message: 'User is not authorized',
-      //     });
-      //   const userData = this.authService.decodeRefreshToken(
-      //     request.cookie('refreshToken'),
-      //   );
-      // }
+      const [bearer, accessToken] = headerData.split(' ');
+      const refreshToken = '';
+      const verifyTokens = await this.authService.validateTokens(
+        accessToken,
+        refreshToken,
+      );
+      if (!verifyTokens && bearer !== 'Bearer') {
+        throw new UnauthorizedException({
+          message: 'User is not authorized',
+        });
+      }
+      return true;
     } catch (e) {
-      console.log('e ===========>: ', e);
       throw new UnauthorizedException({
         message: 'User is not authorized',
       });
