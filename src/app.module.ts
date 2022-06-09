@@ -16,6 +16,7 @@ import { MailModule } from './mail/mail.module';
       debug: true,
       playground: true,
       typePaths: ['./**/*.graphql'],
+      context: ({ req, res }) => ({ req, res }),
     }),
     ConfigModule.forRoot({
       envFilePath: `./${process.env.NODE_ENV}.env`,

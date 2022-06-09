@@ -1,17 +1,16 @@
 import { AuthGuard } from './../auth/auth.guard';
 import { updateRoleDto } from '../role/dto/updateRole.dto';
-import { UserEntity } from './user.entity';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UseGuards } from '@nestjs/common';
+import { UserEntity } from './entities/user.entity';
 
 @Resolver('User')
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => UserEntity)
-  @UseGuards(AuthGuard)
   async getUsers(): Promise<UserEntity[]> {
     return await this.userService.getAllUsers();
   }

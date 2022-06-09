@@ -4,9 +4,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
-import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { RoleType } from '../graphql.schema'; //TODO Is it critical to have here in service layer such import?
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -56,7 +56,7 @@ export class UserService {
     return await this.getOneUser(userData.id);
   }
 
-  public async addRole(roleData: updateRoleDto): Promise<any> {
+  public async addRole(roleData: updateRoleDto): Promise<UserEntity> {
     const [user, roleName] = await Promise.all([
       this.getOneUser(roleData.userId),
       this.roleRepository.findOne(roleData.roleId),

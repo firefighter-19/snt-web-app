@@ -1,7 +1,7 @@
 import { RoleType } from './../../graphql.schema';
-import { UserEntity } from '../../user/user.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @ObjectType()
 @Entity('roles')

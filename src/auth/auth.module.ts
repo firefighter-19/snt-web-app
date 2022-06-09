@@ -1,12 +1,12 @@
 import { UserModule } from './../user/user.module';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
-import { UserEntity } from './../user/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MailModule } from '../mail/mail.module';
-import { AuthEntity } from './auth.entity';
+import { AuthEntity } from './entities/auth.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Module({
   imports: [

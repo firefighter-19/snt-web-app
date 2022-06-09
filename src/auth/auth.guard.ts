@@ -14,24 +14,29 @@ export class AuthGuard {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = GqlExecutionContext.create(context);
-    const request: Request = ctx.getContext().req;
+    const request = ctx.getContext().req;
     return this.validateRequest(request);
   }
 
   public async validateRequest(request: any): Promise<any> {
+    console.log('request ===========>: ', request.headers.authorization);
     try {
-      const result = request.headers.authorization;
-      // const bearer = result.split(' ')[0];
-      // const token = result.split(' ')[1];
-      console.log(result);
-      // if (bearer !== 'Bearer' || !token) {
-      //   throw new UnauthorizedException({
-      //     message: 'User is not authorized',
-      //   });
+      const headerData = request.headers.authorization;
+      console.log('request.http.headers ===========>: ', headerData);
+      const [bearer, token] = headerData.split(' ');
+      const verifyAccessToken = this.authService.validateAccessToken(token);
+      // if (!verifyAccessToken) {
+      //   const verifyRefreshToken = this.authService.validateRefreshToken(
+      //     request.cookie('refreshToken'),
+      //   );
+      //   if (!verifyRefreshToken)
+      //     throw new UnauthorizedException({
+      //       message: 'User is not authorized',
+      //     });
+      //   const userData = this.authService.decodeRefreshToken(
+      //     request.cookie('refreshToken'),
+      //   );
       // }
-      // const user = this.jwtService.verify(token);
-      // console.log('user ===========>: ', user);
-      // return true;
     } catch (e) {
       console.log('e ===========>: ', e);
       throw new UnauthorizedException({

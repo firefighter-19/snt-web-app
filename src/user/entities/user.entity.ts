@@ -9,8 +9,8 @@ import {
   JoinTable,
   OneToOne,
 } from 'typeorm';
-import { AuthEntity } from '../auth/auth.entity';
-import { RoleEntity } from './../role/entities/role.entity';
+import { AuthEntity } from '../../auth/entities/auth.entity';
+import { RoleEntity } from '../../role/entities/role.entity';
 
 @ObjectType()
 @Entity('users')

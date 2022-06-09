@@ -1,4 +1,3 @@
-import { UserEntity } from './../user/user.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
@@ -7,6 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @ObjectType()
 @Entity('auth')

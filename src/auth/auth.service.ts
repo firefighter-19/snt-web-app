@@ -1,5 +1,4 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './../user/user.entity';
 import { CreateUserDto } from './../user/dto/createUser.dto';
 import { UserService } from './../user/user.service';
 import {
@@ -11,8 +10,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { LoginUser, Token } from '../graphql.schema';
-import { AuthEntity } from './auth.entity';
+import { AuthEntity } from './entities/auth.entity';
 import { Repository } from 'typeorm';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -23,15 +23,26 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async loginUser(userData: LoginUser): Promise<UserEntity> {
+  public async loginUser(userData: LoginUser): Promise<Token> {
     const user = await this.userService.getUserByEmail(userData.email);
     const checkPassword = await compare(user.password, userData.password);
-
     if (user && checkPassword) {
-      return user;
+      const tokens = this.generateUserToken(user);
+      await this.authRepository.update(
+        { id: user.id },
+        {
+          refreshToken: tokens.refreshToken,
+          userId: user.id,
+        },
+      );
+      return tokens;
     }
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
   }
+
+  // public authorizeUser(token: string) {
+  //   return this.jwtService.decode(token);
+  // }
 
   public async registration(userData: CreateUserDto): Promise<Token> {
     const userExist = await this.userService.getUserByEmail(userData.email);
