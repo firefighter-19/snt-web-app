@@ -40,10 +40,6 @@ export class AuthService {
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
   }
 
-  // public authorizeUser(token: string) {
-  //   return this.jwtService.decode(token);
-  // }
-
   public async registration(userData: CreateUserDto): Promise<Token> {
     const userExist = await this.userService.getUserByEmail(userData.email);
     if (userExist) {
@@ -80,18 +76,11 @@ export class AuthService {
     };
   }
 
-  public async validateTokens(
-    accessToken: string,
-    refreshToken: string,
-  ): Promise<Token> {
+  public async validateAccessToken(accessToken: string): Promise<Token> {
     try {
       const user = await this.jwtService.verify(accessToken, {
         secret: process.env.ACCESS_TOKEN,
       });
-      if (!user) {
-        //TODO current function doesn't work => after verify we immediately throw to 'catch'
-        return await this.validateRefreshToken(refreshToken);
-      }
       return user;
     } catch (e) {
       throw new UnauthorizedException({
@@ -100,7 +89,7 @@ export class AuthService {
     }
   }
 
-  private async validateRefreshToken(refreshToken: string): Promise<Token> {
+  public async validateRefreshToken(refreshToken: string): Promise<Token> {
     try {
       const user = this.jwtService.verify(refreshToken, {
         secret: process.env.REFRESH_TOKEN,

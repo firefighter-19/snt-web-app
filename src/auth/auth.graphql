@@ -1,5 +1,10 @@
 type Query {
-  getRefreshToken(accessToken: String!): String!
+  loginUser(userData: LoginUser!): User
+  validateToken(refreshToken: String!): Token!
+}
+
+type Mutation {
+  registration(createUser: CreateUserInput!): Token!
 }
 
 type Token {
@@ -15,4 +20,9 @@ type RefreshToken {
 input RefreshTokenInput {
   userId: ID!
   refreshToken: String!
+}
+
+input LoginUser {
+  email: String!
+  password: String!
 }

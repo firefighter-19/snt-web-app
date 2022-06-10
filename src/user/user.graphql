@@ -1,11 +1,9 @@
 type Query {
   getUsers: [User]
   getUser(id: ID!): User
-  loginUser(userData: LoginUser!): User
 }
 
 type Mutation {
-  registration(createUser: CreateUserInput!): Token!
   updateUser(updateUser: UpdateUserInput!): User
   deleteUsers(deleteUser: [ID!]!): [String]
   addRole(addRole: RoleInput!): User
@@ -33,11 +31,6 @@ input CreateUserInput {
   name: String!
   lastName: String!
   siteNumber: Int!
-}
-
-input LoginUser {
-  email: String!
-  password: String!
 }
 
 input RoleInput {

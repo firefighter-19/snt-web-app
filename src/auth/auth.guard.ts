@@ -23,12 +23,10 @@ export class AuthGuard {
     try {
       const headerData = request.headers.authorization;
       const [bearer, accessToken] = headerData.split(' ');
-      const refreshToken = '';
-      const verifyTokens = await this.authService.validateTokens(
+      const verifyAccess = await this.authService.validateAccessToken(
         accessToken,
-        refreshToken,
       );
-      if (!verifyTokens && bearer !== 'Bearer') {
+      if (!verifyAccess && bearer !== 'Bearer') {
         throw new UnauthorizedException({
           message: 'User is not authorized',
         });

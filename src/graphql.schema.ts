@@ -18,6 +18,11 @@ export class RefreshTokenInput {
     refreshToken: string;
 }
 
+export class LoginUser {
+    email: string;
+    password: string;
+}
+
 export class CreateRoleInput {
     role: RoleType;
 }
@@ -28,11 +33,6 @@ export class CreateUserInput {
     name: string;
     lastName: string;
     siteNumber: number;
-}
-
-export class LoginUser {
-    email: string;
-    password: string;
 }
 
 export class RoleInput {
@@ -55,15 +55,31 @@ export class DeleteUserInput {
 export abstract class IQuery {
     __typename?: 'IQuery';
 
-    abstract getRefreshToken(accessToken: string): string | Promise<string>;
+    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateToken(refreshToken: string): Token | Promise<Token>;
 
     abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+}
 
-    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
+export abstract class IMutation {
+    __typename?: 'IMutation';
+
+    abstract registration(createUser: CreateUserInput): Token | Promise<Token>;
+
+    abstract createRole(createRole: CreateRoleInput): Nullable<Role> | Promise<Nullable<Role>>;
+
+    abstract updateUser(updateUser: UpdateUserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract deleteUsers(deleteUser: string[]): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
+
+    abstract addRole(addRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract removeRole(removeRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class Token {
@@ -82,22 +98,6 @@ export class ActivationLink {
     __typename?: 'ActivationLink';
     email: string;
     link: string;
-}
-
-export abstract class IMutation {
-    __typename?: 'IMutation';
-
-    abstract createRole(createRole: CreateRoleInput): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract registration(createUser: CreateUserInput): Token | Promise<Token>;
-
-    abstract updateUser(updateUser: UpdateUserInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract deleteUsers(deleteUser: string[]): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
-
-    abstract addRole(addRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract removeRole(removeRole: RoleInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class Role {
