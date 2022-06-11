@@ -5,6 +5,9 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UseGuards } from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
+import { Roles } from '../auth/auth-role.decorator';
+import { AuthRoleGuard } from '../auth/auth-role.guard';
+import { RoleType } from '../graphql.schema';
 
 @Resolver('User')
 export class UserResolver {
@@ -29,16 +32,22 @@ export class UserResolver {
   }
 
   @Mutation(() => UserEntity)
+  @Roles(RoleType.ADMIN)
+  @UseGuards(AuthRoleGuard)
   async deleteUsers(@Args('deleteUser') ids: string[]): Promise<string[]> {
     return await this.userService.deleteUsers(ids);
   }
 
   @Mutation(() => UserEntity)
+  @Roles(RoleType.ADMIN)
+  @UseGuards(AuthRoleGuard)
   async addRole(@Args('addRole') roleData: updateRoleDto): Promise<UserEntity> {
     return await this.userService.addRole(roleData);
   }
 
   @Mutation(() => UserEntity)
+  @Roles(RoleType.ADMIN)
+  @UseGuards(AuthRoleGuard)
   async removeRole(
     @Args('removeRole') roleData: updateRoleDto,
   ): Promise<UserEntity> {

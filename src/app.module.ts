@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
-import { AdminModule } from './admin/admin.module';
 import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
@@ -32,7 +31,6 @@ import { MailModule } from './mail/mail.module';
       autoLoadEntities: true,
     }),
     UserModule,
-    AdminModule,
     RoleModule,
     AuthModule,
     MailModule,

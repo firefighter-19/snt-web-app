@@ -76,7 +76,7 @@ export class AuthService {
     };
   }
 
-  public async validateAccessToken(accessToken: string): Promise<Token> {
+  public async validateAccessToken(accessToken: string): Promise<UserEntity> {
     try {
       const user = await this.jwtService.verify(accessToken, {
         secret: process.env.ACCESS_TOKEN,
