@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConverterResolver } from './converter.resolver';
+import { PaymentInfoResolver } from './payment-info.resolver';
 
-describe('ConverterResolver', () => {
-  let resolver: ConverterResolver;
+describe('PaymentInfoResolver', () => {
+  let resolver: PaymentInfoResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConverterResolver],
+      providers: [PaymentInfoResolver],
     }).compile();
 
-    resolver = module.get<ConverterResolver>(ConverterResolver);
+    resolver = module.get<PaymentInfoResolver>(PaymentInfoResolver);
   });
 
   it('should be defined', () => {
