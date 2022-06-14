@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { ConverterModule } from './converter/converter.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { MailModule } from './mail/mail.module';
     RoleModule,
     AuthModule,
     MailModule,
+    ConverterModule,
   ],
 })
 export class AppModule {}
