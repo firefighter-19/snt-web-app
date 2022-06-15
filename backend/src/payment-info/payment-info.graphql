@@ -1,0 +1,7 @@
+# type Mutation {
+#   addPaymentData: String!
+# }
+
+type Query {
+  getData: String!
+}

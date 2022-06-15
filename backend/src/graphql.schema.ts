@@ -59,6 +59,8 @@ export abstract class IQuery {
 
     abstract validateToken(refreshToken: string): Token | Promise<Token>;
 
+    abstract getData(): string | Promise<string>;
+
     abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;

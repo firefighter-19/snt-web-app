@@ -10,6 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { AuthEntity } from '../../auth/entities/auth.entity';
+import { PaymentInfoEntity } from '../../payment-info/entities/payment-info.entity';
 import { RoleEntity } from '../../role/entities/role.entity';
 
 @ObjectType()
@@ -53,4 +54,7 @@ export class UserEntity {
 
   @OneToOne(() => AuthEntity, (token) => token.user)
   public token!: AuthEntity;
+
+  @OneToOne(() => PaymentInfoEntity, (info) => info.user)
+  public paymentInfo: PaymentInfoEntity;
 }
