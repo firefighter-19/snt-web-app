@@ -36,3 +36,4 @@ backend/!.vscode/launch.json
 backend/!.vscode/extensions.json
 backend/prod.env
 frontend/node_modules
+frontend/.vscode
