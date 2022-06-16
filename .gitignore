@@ -1,6 +1,7 @@
 # compiled output
 backend/dist
 backend/node_modules
+frontend/node_modules
 
 # Logs
 backend/logs
@@ -34,3 +35,4 @@ backend/!.vscode/tasks.json
 backend/!.vscode/launch.json
 backend/!.vscode/extensions.json
 backend/prod.env
+frontend/node_modules
