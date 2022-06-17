@@ -1,6 +1,6 @@
 type Query {
   loginUser(userData: LoginUser!): User
-  validateToken(refreshToken: String!): Token!
+  validateToken: Token!
 }
 
 type Mutation {

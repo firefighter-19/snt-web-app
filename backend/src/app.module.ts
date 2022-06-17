@@ -17,6 +17,11 @@ import { PaymentInfoModule } from './payment-info/payment-info.module';
       playground: true,
       typePaths: ['./**/*.graphql'],
       context: ({ req, res }) => ({ req, res }),
+      cors: {
+        origin: true,
+        credentials: true,
+      },
+      csrfPrevention: true,
     }),
     ConfigModule.forRoot({
       envFilePath: `./${process.env.NODE_ENV}.env`,

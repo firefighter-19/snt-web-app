@@ -57,7 +57,7 @@ export abstract class IQuery {
 
     abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
 
-    abstract validateToken(refreshToken: string): Token | Promise<Token>;
+    abstract validateToken(): Token | Promise<Token>;
 
     abstract getData(): string | Promise<string>;
 
