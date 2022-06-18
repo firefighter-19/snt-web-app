@@ -1,10 +1,10 @@
 type Query {
-  loginUser(userData: LoginUser!): User
   validateToken: Token!
 }
 
 type Mutation {
-  registration(createUser: CreateUserInput!): Token!
+  loginUser(userData: LoginUser!): User
+  registration(createUser: CreateUserInput!): User!
 }
 
 type Token {

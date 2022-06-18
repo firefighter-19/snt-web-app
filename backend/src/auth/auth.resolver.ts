@@ -1,3 +1,4 @@
+import { UserEntity } from './../user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
 import { CreateUserDto } from '../user/dto/createUser.dto';
@@ -11,23 +12,22 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Query(() => Token)
-  @UseInterceptors(LoggingInterceptor)
-  async loginUser(@Args('userData') userData: LoginUser): Promise<Token> {
-    return await this.authService.loginUser(userData);
-  }
-
-  @Query(() => Token)
   async validateToken(@Context() req: Request): Promise<Token> {
     const refreshToken: string = req.cookies || '';
     return await this.authService.validateRefreshToken(refreshToken);
   }
+  @Mutation(() => UserEntity)
+  @UseInterceptors(LoggingInterceptor)
+  async loginUser(@Args('userData') userData: LoginUser): Promise<UserEntity> {
+    return await this.authService.loginUser(userData);
+  }
 
-  @Mutation(() => Token)
+  @Mutation(() => UserEntity)
   @UseInterceptors(LoggingInterceptor)
   async registration(
     @Args('createUser')
     userData: CreateUserDto,
-  ): Promise<Token> {
+  ): Promise<UserEntity> {
     return await this.authService.registration(userData);
   }
 }

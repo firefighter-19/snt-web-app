@@ -23,9 +23,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async loginUser(userData: LoginUser): Promise<Token> {
+  public async loginUser(userData: LoginUser): Promise<UserEntity> {
     const user = await this.userService.getUserByEmail(userData.email);
-    const checkPassword = await compare(user.password, userData.password);
+    const checkPassword = await compare(userData.password, user.password);
     if (user && checkPassword) {
       const tokens = this.generateUserToken(user);
       await this.authRepository.update(
@@ -35,12 +35,17 @@ export class AuthService {
           userId: user.id,
         },
       );
-      return tokens;
+      const userToken = await this.authRepository.findOne({
+        where: {
+          userId: user.id,
+        },
+      });
+      return { ...user, token: userToken };
     }
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
   }
 
-  public async registration(userData: CreateUserDto): Promise<Token> {
+  public async registration(userData: CreateUserDto): Promise<UserEntity> {
     const userExist = await this.userService.getUserByEmail(userData.email);
     if (userExist) {
       throw new HttpException(
@@ -55,11 +60,11 @@ export class AuthService {
     });
 
     const tokens = this.generateUserToken(user);
-    await this.authRepository.save({
+    const userToken = await this.authRepository.save({
       refreshToken: tokens.refreshToken,
       userId: user.id,
     });
-    return tokens;
+    return { ...user, token: userToken };
   }
 
   private generateUserToken(user: UserEntity): Token {

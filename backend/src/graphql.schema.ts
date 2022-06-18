@@ -55,8 +55,6 @@ export class DeleteUserInput {
 export abstract class IQuery {
     __typename?: 'IQuery';
 
-    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
-
     abstract validateToken(): Token | Promise<Token>;
 
     abstract getData(): string | Promise<string>;
@@ -71,7 +69,9 @@ export abstract class IQuery {
 export abstract class IMutation {
     __typename?: 'IMutation';
 
-    abstract registration(createUser: CreateUserInput): Token | Promise<Token>;
+    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract registration(createUser: CreateUserInput): User | Promise<User>;
 
     abstract createRole(createRole: CreateRoleInput): Nullable<Role> | Promise<Nullable<Role>>;
 
