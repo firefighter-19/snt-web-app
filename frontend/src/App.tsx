@@ -1,28 +1,32 @@
-import { gql, useQuery } from "@apollo/client";
-import { Route, Routes } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { FC } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { Layout } from "./components/Layout";
 import { Login } from "./components/Login";
+import { Unauthorized } from "./components/Unauthorized";
+import { VALIDATE_TOKEN } from "./graphql/queries/validateToken";
 
-const VALIDATE_TOKEN = gql`
-  query token($data: String!) {
-    validateToken(refreshToken: $data) {
-      refreshToken
-    }
+export const App: FC = () => {
+  const navigate = useNavigate();
+
+  function navigateToLoginPage() {
+    navigate("unauthorized");
+    const redirect = setTimeout(() => navigate("login"), 3000);
+    return () => clearTimeout(redirect);
   }
-`;
 
-export function App(): JSX.Element {
-  const { loading, error } = useQuery(VALIDATE_TOKEN, {
-    variables: {
-      data: "123",
-    },
+  const { loading } = useQuery(VALIDATE_TOKEN, {
+    onError: () => navigateToLoginPage(),
   });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Layout />}>
+        <Route path="unauthorized" element={<Unauthorized />} />
+        <Route path="login" element={<Login />} />
+      </Route>
     </Routes>
   );
-}
+};

@@ -1,17 +1,22 @@
 import { ApolloProvider } from "@apollo/client";
 import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { App } from "./App";
 import { client } from "./graphql";
 
-ReactDOM.render(
+const container = document.getElementById("app") as HTMLElement;
+
+const root = createRoot(container);
+
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <App />
+        <Routes>
+          <Route path="/*" element={<App />} />
+        </Routes>
       </ApolloProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("app")
+  </React.StrictMode>
 );
