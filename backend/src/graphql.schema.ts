@@ -90,9 +90,10 @@ export class Token {
     refreshToken: string;
 }
 
-export class RefreshToken {
-    __typename?: 'RefreshToken';
+export class TokenData {
+    __typename?: 'TokenData';
     userId: string;
+    accessToken: string;
     refreshToken: string;
 }
 
@@ -119,7 +120,7 @@ export class User {
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;
     role?: Nullable<Nullable<Role>[]>;
-    token: RefreshToken;
+    token: TokenData;
 }
 
 type Nullable<T> = T | null;

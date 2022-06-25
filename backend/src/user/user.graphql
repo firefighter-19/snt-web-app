@@ -20,7 +20,7 @@ type User {
   createdAt: Date
   updatedAt: Date
   role: [Role]
-  token: RefreshToken!
+  token: TokenData!
 }
 
 scalar Date

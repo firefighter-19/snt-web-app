@@ -40,7 +40,10 @@ export class AuthService {
           userId: user.id,
         },
       });
-      return { ...user, token: userToken };
+      return {
+        ...user,
+        token: { ...userToken, accessToken: tokens.accessToken },
+      };
     }
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
   }
@@ -64,7 +67,10 @@ export class AuthService {
       refreshToken: tokens.refreshToken,
       userId: user.id,
     });
-    return { ...user, token: userToken };
+    return {
+      ...user,
+      token: { ...userToken, accessToken: tokens.accessToken },
+    };
   }
 
   private generateUserToken(user: UserEntity): Token {

@@ -12,8 +12,9 @@ type Token {
   refreshToken: String!
 }
 
-type RefreshToken {
+type TokenData {
   userId: ID!
+  accessToken: String!
   refreshToken: String!
 }
 
