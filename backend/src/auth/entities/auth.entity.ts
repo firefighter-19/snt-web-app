@@ -20,6 +20,9 @@ export class AuthEntity {
   public refreshToken!: string;
 
   @Field()
+  public accessToken: string;
+
+  @Field()
   @Column()
   public userId: string;
 
