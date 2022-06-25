@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
 
-export const Layout: FC = () => (
+export const ErrorLayout: FC = () => (
   <div>
     <Outlet />
   </div>

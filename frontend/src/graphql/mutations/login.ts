@@ -4,6 +4,11 @@ export const LOGIN = gql`
   mutation login($data: LoginUser!) {
     loginUser(userData: $data) {
       id
+      name
+      surname
+      role {
+        role
+      }
     }
   }
 `;

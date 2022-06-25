@@ -1,9 +1,11 @@
 import { useMutation } from "@apollo/client";
 import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../graphql/inputTypes/loginUser";
-import { LOGIN } from "../graphql/queries/login";
+import { LOGIN } from "../graphql/mutations/login";
 
 export const Login: FC = () => {
+  const navigate = useNavigate();
   const [loginFields, setLoginFields] = useState<LoginUser>({
     email: "",
     password: "",
@@ -16,9 +18,8 @@ export const Login: FC = () => {
         password: loginFields.password,
       },
     },
-    onCompleted: (res) => {
-      console.log("res ===========>: ", res);
-    },
+    onCompleted: () => navigate("/"),
+    onError: () => navigate("unauthorized"),
   });
 
   function changeLogin(value: string) {
