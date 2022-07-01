@@ -87,11 +87,27 @@ export class AuthService {
     };
   }
 
-  public async validateAccessToken(accessToken: string): Promise<UserEntity> {
+  public async validateAccessToken({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken?: string;
+  }): Promise<UserEntity> {
     try {
-      const user = await this.jwtService.verify(accessToken, {
+      const userInfo = await this.jwtService.verify(accessToken, {
         secret: process.env.ACCESS_TOKEN,
       });
+      if (!userInfo && refreshToken) {
+        const refreshUser = await this.validateRefreshToken(refreshToken);
+        return refreshUser;
+      }
+      if (!userInfo && !refreshToken) {
+        throw new UnauthorizedException({
+          message: 'User is not authorized',
+        });
+      }
+      const user = await this.userService.getOneUser(userInfo.id);
       return user;
     } catch (e) {
       throw new UnauthorizedException({
@@ -100,7 +116,9 @@ export class AuthService {
     }
   }
 
-  public async validateRefreshToken(refreshToken: string): Promise<Token> {
+  private async validateRefreshToken(
+    refreshToken: string,
+  ): Promise<UserEntity> {
     try {
       const user = this.jwtService.verify(refreshToken, {
         secret: process.env.REFRESH_TOKEN,
@@ -113,7 +131,16 @@ export class AuthService {
       const tokens = this.generateUserToken(user);
       user.refreshToken = tokens.refreshToken;
       await this.authRepository.update({ id: user.id }, { ...user });
-      return tokens;
+      const userToken = await this.authRepository.save({
+        refreshToken: tokens.refreshToken,
+        userId: user.id,
+      });
+
+      const updatedUser = await this.userService.getOneUser(user.id);
+      return {
+        ...updatedUser,
+        token: { ...userToken, accessToken: tokens.accessToken },
+      };
     } catch (e) {
       throw new UnauthorizedException({
         message: 'User is not authorized',

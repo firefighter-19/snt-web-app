@@ -1,9 +1,5 @@
-type Query {
-  validateToken: Token!
-}
-
 type Mutation {
-  loginUser(userData: LoginUser!): User
+  loginUser(userData: LoginUser!): User!
   registration(createUser: CreateUserInput!): User!
 }
 

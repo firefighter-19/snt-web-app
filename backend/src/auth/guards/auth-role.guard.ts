@@ -1,4 +1,4 @@
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import {
   ExecutionContext,
   Injectable,
@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
-import { ROLES_KEY } from './auth-role.decorator';
+import { ROLES_KEY } from '../auth-role.decorator';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -33,10 +33,9 @@ export class AuthRoleGuard {
     requiredRoles: string[],
   ): Promise<any> {
     try {
-      const headerData = request.headers.authorization;
-      const [bearer, accessToken] = headerData.split(' ');
-      const user = await this.authService.validateAccessToken(accessToken);
-      if (!user && bearer !== 'Bearer') {
+      const accessToken = request.headers.authorization;
+      const user = await this.authService.validateAccessToken({ accessToken });
+      if (!user) {
         throw new UnauthorizedException({
           message: 'User is not authorized',
         });

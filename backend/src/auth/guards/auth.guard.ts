@@ -1,4 +1,4 @@
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import {
   ExecutionContext,
   Injectable,
@@ -19,14 +19,13 @@ export class AuthGuard {
     return this.validateRequest(request);
   }
 
-  public async validateRequest(request: Request): Promise<any> {
+  public async validateRequest(request: Request): Promise<boolean> {
     try {
-      const headerData = request.headers.authorization;
-      const [bearer, accessToken] = headerData.split(' ');
-      const verifyAccess = await this.authService.validateAccessToken(
+      const accessToken = request.headers.authorization;
+      const verifyAccess = await this.authService.validateAccessToken({
         accessToken,
-      );
-      if (!verifyAccess && bearer !== 'Bearer') {
+      });
+      if (!verifyAccess) {
         throw new UnauthorizedException({
           message: 'User is not authorized',
         });
