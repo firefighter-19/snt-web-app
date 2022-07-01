@@ -8,6 +8,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Response } from 'express';
 import { Observable, tap } from 'rxjs';
+import { add } from 'date-fns';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -24,6 +25,10 @@ export class LoggingInterceptor implements NestInterceptor {
           JSON.stringify(data.token.refreshToken),
           {
             httpOnly: true,
+            secure: true,
+            expires: add(new Date(), {
+              days: 30,
+            }),
           },
         );
       }),

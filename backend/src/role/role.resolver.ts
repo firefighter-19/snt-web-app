@@ -5,7 +5,7 @@ import { RoleEntity } from './entities/role.entity';
 import { UseGuards } from '@nestjs/common';
 import { RoleType } from '../graphql.schema';
 import { Roles } from '../auth/auth-role.decorator';
-import { AuthRoleGuard } from '../auth/auth-role.guard';
+import { AuthRoleGuard } from '../auth/guards/auth-role.guard';
 
 @Resolver('Role')
 export class RoleResolver {

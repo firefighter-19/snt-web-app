@@ -1,4 +1,4 @@
-import { AuthGuard } from './../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { updateRoleDto } from '../role/dto/updateRole.dto';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { UseGuards } from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
 import { Roles } from '../auth/auth-role.decorator';
-import { AuthRoleGuard } from '../auth/auth-role.guard';
+import { AuthRoleGuard } from '../auth/guards/auth-role.guard';
 import { RoleType } from '../graphql.schema';
 
 @Resolver('User')
