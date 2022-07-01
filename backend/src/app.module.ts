@@ -18,7 +18,7 @@ import { PaymentInfoModule } from './payment-info/payment-info.module';
       typePaths: ['./**/*.graphql'],
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: true,
+        origin: ['http://localhost:8080'],
         credentials: true,
       },
       csrfPrevention: true,
