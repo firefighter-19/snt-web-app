@@ -52,24 +52,8 @@ export class DeleteUserInput {
     ids: string[];
 }
 
-export abstract class IQuery {
-    __typename?: 'IQuery';
-
-    abstract validateToken(): Token | Promise<Token>;
-
-    abstract getData(): string | Promise<string>;
-
-    abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
-
-    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
-}
-
 export abstract class IMutation {
-    __typename?: 'IMutation';
-
-    abstract loginUser(userData: LoginUser): Nullable<User> | Promise<Nullable<User>>;
+    abstract loginUser(userData: LoginUser): User | Promise<User>;
 
     abstract registration(createUser: CreateUserInput): User | Promise<User>;
 
@@ -85,32 +69,37 @@ export abstract class IMutation {
 }
 
 export class Token {
-    __typename?: 'Token';
     accessToken: string;
     refreshToken: string;
 }
 
 export class TokenData {
-    __typename?: 'TokenData';
     userId: string;
     accessToken: string;
     refreshToken: string;
 }
 
 export class ActivationLink {
-    __typename?: 'ActivationLink';
     email: string;
     link: string;
 }
 
+export abstract class IQuery {
+    abstract getData(): string | Promise<string>;
+
+    abstract getRole(getRole: string): Nullable<Role> | Promise<Nullable<Role>>;
+
+    abstract getUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+
+    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+}
+
 export class Role {
-    __typename?: 'Role';
     id: string;
     role: RoleType;
 }
 
 export class User {
-    __typename?: 'User';
     id: string;
     email: string;
     password: string;
