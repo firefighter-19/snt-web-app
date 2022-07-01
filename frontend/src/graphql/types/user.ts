@@ -13,3 +13,7 @@ export interface User {
   role?: Role[];
   token: RefreshToken;
 }
+
+export interface LoggedUser {
+  loginUser: User;
+}

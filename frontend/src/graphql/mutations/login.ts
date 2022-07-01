@@ -5,7 +5,10 @@ export const LOGIN = gql`
     loginUser(userData: $data) {
       id
       name
-      surname
+      lastName
+      token {
+        accessToken
+      }
       role {
         role
       }
