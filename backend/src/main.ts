@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,8 +9,8 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: ['http://localhost:8080'],
+    exposedHeaders: 'X-Auth-Token',
   });
-  app.use(cookieParser());
   await app.listen(PORT || 3000, () =>
     console.log(`App was started on ${PORT} port`),
   );
