@@ -19,7 +19,7 @@
 .navbar__list_link {
   color: #fff;
   padding: 1.065rem 1rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 1.5rem;
   &:hover {
     background-color: #3498DB;
