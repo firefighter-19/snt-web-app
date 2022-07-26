@@ -6,9 +6,6 @@ export const LOGIN = gql`
       id
       name
       lastName
-      token {
-        accessToken
-      }
       role {
         role
       }
