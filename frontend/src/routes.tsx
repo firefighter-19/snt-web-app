@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { Login } from "./components/Login";
-import { Unauthorized } from "./components/Unauthorized";
 import { Bills } from "./pages/Bills/Bills";
 import { Home } from "./pages/Home/Home";
 import { Info } from "./pages/Info/Info";
@@ -12,60 +10,52 @@ export interface Routes {
   path: string;
 }
 
-export const routes: Routes[] = [
+export const mainRoutes: Routes[] = [
   {
     id: "1",
-    path: "home",
+    path: "/",
     element: <Home />,
   },
   {
     id: "2",
-    path: "bills",
+    path: "/bills",
     element: <Bills />,
   },
   {
     id: "3",
-    path: "info",
+    path: "/info",
     element: <Info />,
   },
   {
-    id: "4",
-    path: "unauthorized",
-    element: <Unauthorized />,
-  },
-  {
-    id: "5",
-    path: "login",
-    element: <Login />,
-  },
-  {
     id: "6",
-    path: "plans",
+    path: "/plans",
     element: <Home />,
   },
   {
     id: "7",
-    path: "data",
+    path: "/data",
     element: <Home />,
   },
   {
     id: "8",
-    path: "gates",
+    path: "/gates",
     element: <Home />,
   },
   {
     id: "9",
-    path: "contacts",
+    path: "/contacts",
     element: <Home />,
   },
   {
     id: "10",
-    path: "areas",
+    path: "/areas",
     element: <Home />,
   },
   {
     id: "11",
     path: "*",
-    element: <Navigate to="/home" replace />,
+    element: <Navigate to="/" replace />,
   },
 ];
+
+export const privateRoutes = [];
