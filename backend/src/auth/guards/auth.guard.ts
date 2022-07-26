@@ -21,10 +21,10 @@ export class AuthGuard {
 
   public async validateRequest(request: Request): Promise<boolean> {
     try {
-      const accessToken = request.headers.authorization;
-      const verifyAccess = await this.authService.validateAccessToken({
-        accessToken,
-      });
+      const refreshToken = request.headers.authorization;
+      const verifyAccess = await this.authService.validateRefreshToken(
+        refreshToken,
+      );
       if (!verifyAccess) {
         throw new UnauthorizedException({
           message: 'User is not authorized',

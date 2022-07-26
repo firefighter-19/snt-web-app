@@ -4,13 +4,11 @@ type Mutation {
 }
 
 type Token {
-  accessToken: String!
   refreshToken: String!
 }
 
 type TokenData {
   userId: ID!
-  accessToken: String!
   refreshToken: String!
 }
 

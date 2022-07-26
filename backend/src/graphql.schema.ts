@@ -69,13 +69,11 @@ export abstract class IMutation {
 }
 
 export class Token {
-    accessToken: string;
     refreshToken: string;
 }
 
 export class TokenData {
     userId: string;
-    accessToken: string;
     refreshToken: string;
 }
 
@@ -109,7 +107,6 @@ export class User {
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;
     role?: Nullable<Nullable<Role>[]>;
-    token: TokenData;
 }
 
 type Nullable<T> = T | null;

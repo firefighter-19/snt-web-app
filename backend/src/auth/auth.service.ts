@@ -42,7 +42,7 @@ export class AuthService {
       });
       return {
         ...user,
-        token: { ...userToken, accessToken: tokens.accessToken },
+        token: { ...userToken, refreshToken: tokens.refreshToken },
       };
     }
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
@@ -69,56 +69,21 @@ export class AuthService {
     });
     return {
       ...user,
-      token: { ...userToken, accessToken: tokens.accessToken },
+      token: { ...userToken, refreshToken: tokens.refreshToken },
     };
   }
 
   private generateUserToken(user: UserEntity): Token {
     const userInfo = { id: user.id, email: user.email, role: user.role };
     return {
-      accessToken: this.jwtService.sign(userInfo, {
-        secret: process.env.ACCESS_TOKEN || 'ACCESS',
-        expiresIn: '1h',
-      }),
       refreshToken: this.jwtService.sign(userInfo, {
         secret: process.env.REFRESH_TOKEN || 'PRIVATE',
-        expiresIn: '30d',
+        expiresIn: '14d',
       }),
     };
   }
 
-  public async validateAccessToken({
-    accessToken,
-    refreshToken,
-  }: {
-    accessToken: string;
-    refreshToken?: string;
-  }): Promise<UserEntity> {
-    try {
-      const userInfo = await this.jwtService.verify(accessToken, {
-        secret: process.env.ACCESS_TOKEN,
-      });
-      if (!userInfo && refreshToken) {
-        const refreshUser = await this.validateRefreshToken(refreshToken);
-        return refreshUser;
-      }
-      if (!userInfo && !refreshToken) {
-        throw new UnauthorizedException({
-          message: 'User is not authorized',
-        });
-      }
-      const user = await this.userService.getOneUser(userInfo.id);
-      return user;
-    } catch (e) {
-      throw new UnauthorizedException({
-        message: 'User is not authorized',
-      });
-    }
-  }
-
-  private async validateRefreshToken(
-    refreshToken: string,
-  ): Promise<UserEntity> {
+  public async validateRefreshToken(refreshToken: string): Promise<UserEntity> {
     try {
       const user = this.jwtService.verify(refreshToken, {
         secret: process.env.REFRESH_TOKEN,
@@ -139,7 +104,7 @@ export class AuthService {
       const updatedUser = await this.userService.getOneUser(user.id);
       return {
         ...updatedUser,
-        token: { ...userToken, accessToken: tokens.accessToken },
+        token: { ...userToken, refreshToken: tokens.refreshToken },
       };
     } catch (e) {
       throw new UnauthorizedException({
