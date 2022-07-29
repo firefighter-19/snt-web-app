@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
+import { AccountQuery } from "./pages/Account/AccoutQuery";
 import { Bills } from "./pages/Bills/Bills";
 import { Home } from "./pages/Home/Home";
 import { Info } from "./pages/Info/Info";
@@ -50,6 +51,11 @@ export const mainRoutes: Routes[] = [
     id: "10",
     path: "/areas",
     element: <Home />,
+  },
+  {
+    id: "11",
+    path: "/account",
+    element: <AccountQuery />,
   },
   {
     id: "11",
