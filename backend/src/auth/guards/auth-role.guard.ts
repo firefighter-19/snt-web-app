@@ -1,5 +1,6 @@
 import { AuthService } from '../auth.service';
 import {
+  CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
@@ -11,7 +12,7 @@ import { ROLES_KEY } from '../auth-role.decorator';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
-export class AuthRoleGuard {
+export class AuthRoleGuard implements CanActivate {
   constructor(private authService: AuthService, private reflector: Reflector) {}
   canActivate(
     context: ExecutionContext,
@@ -33,13 +34,15 @@ export class AuthRoleGuard {
     requiredRoles: string[],
   ): Promise<boolean> {
     try {
-      const refreshToken = request.headers.authorization;
-      const user = await this.authService.validateRefreshToken(refreshToken);
-      if (!user) {
+      const [bearer, token] = request.headers['x-auth-token']
+        .toString()
+        .split(' ');
+      if (bearer !== 'Bearer' && !token) {
         throw new UnauthorizedException({
           message: 'User is not authorized',
         });
       }
+      const user = await this.authService.validateRefreshToken(token);
       return user.role.some((role) => requiredRoles.includes(role.role));
     } catch (e) {
       throw new UnauthorizedException({

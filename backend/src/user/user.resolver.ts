@@ -20,11 +20,13 @@ export class UserResolver {
   }
 
   @Query(() => UserEntity)
+  @UseGuards(AuthGuard)
   async getUser(@Args('getUser') id: string): Promise<UserEntity> {
     return await this.userService.getOneUser(id);
   }
 
   @Mutation(() => UserEntity)
+  @UseGuards(AuthGuard)
   async updateUser(
     @Args('updateUser') userData: UpdateUserDto,
   ): Promise<UserEntity> {

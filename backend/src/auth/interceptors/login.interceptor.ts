@@ -8,15 +8,21 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Response } from 'express';
 import { Observable, tap } from 'rxjs';
+import { AuthService } from '../auth.service';
+
+interface QueryFields {
+  res: Response;
+}
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
+  constructor(private authService: AuthService) {}
   intercept(
     context: ExecutionContext,
     next: CallHandler<UserEntity>,
   ): Observable<UserEntity> {
     const ctx = GqlExecutionContext.create(context);
-    const response: Response = ctx.getContext().res;
+    const { res: response }: QueryFields = ctx.getContext();
     return next.handle().pipe(
       tap((data: UserEntity) => {
         response.setHeader('X-Auth-Token', `Bearer ${data.token.refreshToken}`);

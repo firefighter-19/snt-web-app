@@ -28,18 +28,17 @@ export class AuthService {
     const checkPassword = await compare(userData.password, user.password);
     if (user && checkPassword) {
       const tokens = this.generateUserToken(user);
-      await this.authRepository.update(
-        { id: user.id },
-        {
-          refreshToken: tokens.refreshToken,
-          userId: user.id,
-        },
-      );
       const userToken = await this.authRepository.findOne({
         where: {
           userId: user.id,
         },
       });
+      await this.authRepository
+        .createQueryBuilder()
+        .update('auth')
+        .set({ userId: user.id, refreshToken: tokens.refreshToken })
+        .where('id = :id', { id: userToken.id })
+        .execute();
       return {
         ...user,
         token: { ...userToken, refreshToken: tokens.refreshToken },
@@ -52,7 +51,7 @@ export class AuthService {
     const userExist = await this.userService.getUserByEmail(userData.email);
     if (userExist) {
       throw new HttpException(
-        `User with email ${userData.email}hash already exists`,
+        `User with email ${userData.email} hash already exists`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -77,7 +76,7 @@ export class AuthService {
     const userInfo = { id: user.id, email: user.email, role: user.role };
     return {
       refreshToken: this.jwtService.sign(userInfo, {
-        secret: process.env.REFRESH_TOKEN || 'PRIVATE',
+        secret: process.env.PRIVATE_TOKEN || 'PRIVATE',
         expiresIn: '14d',
       }),
     };
@@ -86,7 +85,7 @@ export class AuthService {
   public async validateRefreshToken(refreshToken: string): Promise<UserEntity> {
     try {
       const user = this.jwtService.verify(refreshToken, {
-        secret: process.env.REFRESH_TOKEN,
+        secret: process.env.PRIVATE_TOKEN || '',
       });
       if (!user) {
         throw new UnauthorizedException({
@@ -95,16 +94,18 @@ export class AuthService {
       }
       const tokens = this.generateUserToken(user);
       user.refreshToken = tokens.refreshToken;
-      await this.authRepository.update({ id: user.id }, { ...user });
-      const userToken = await this.authRepository.save({
-        refreshToken: tokens.refreshToken,
-        userId: user.id,
-      });
+
+      await this.authRepository
+        .createQueryBuilder()
+        .update('auth')
+        .set({ userId: user.id, refreshToken: tokens.refreshToken })
+        .where('id = :id', { id: user.id })
+        .execute();
 
       const updatedUser = await this.userService.getOneUser(user.id);
       return {
         ...updatedUser,
-        token: { ...userToken, refreshToken: tokens.refreshToken },
+        token: { ...user, refreshToken: tokens.refreshToken },
       };
     } catch (e) {
       throw new UnauthorizedException({
