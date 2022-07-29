@@ -13,8 +13,8 @@ export const Header: FC = () => {
           <p className={classes.header_description}>Московская область, Солнечногорский район, д. Носово</p>
         </div>
         {IS_USER_LOGGED_IN ? (
-          <NavLink to="/account" title="Аккаунт">
-            X
+          <NavLink to="/account" title="Аккаунт" className={classes.header__link}>
+            Личный кабинет
           </NavLink>
         ) : (
           <NavLink to="/login" title="Войти" className={classes.header__link}>
