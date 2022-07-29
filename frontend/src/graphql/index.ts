@@ -4,7 +4,10 @@ const authMiddleware = new ApolloLink((operation, forward) =>
   forward(operation).map((response) => {
     const context = operation.getContext();
     const authHeader: string = context.response.headers.get("X-Auth-Token");
-    window.localStorage.setItem("refreshToken", authHeader);
+    const refreshToken = window.localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      window.localStorage.setItem("refreshToken", authHeader);
+    }
     return response;
   })
 );
