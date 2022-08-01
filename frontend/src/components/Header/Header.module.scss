@@ -3,6 +3,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 100%;
+  margin-top: 3rem;
 }
 
 .header__block {
@@ -18,15 +19,6 @@
 
 .header_description {
   font-size: 1rem;
-  color: #fff;
-  text-shadow: -0.250rem 0.250rem 0.250rem #000;
-}
-
-.header__link {
-  font-size: 1.5rem;
-  position: absolute;
-  top: 3%;
-  right: 3%;
   color: #fff;
   text-shadow: -0.250rem 0.250rem 0.250rem #000;
 }
