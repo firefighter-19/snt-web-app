@@ -8,6 +8,7 @@ export const GET_USER = gql`
       lastName
       siteNumber
       role {
+        id
         role
       }
     }
