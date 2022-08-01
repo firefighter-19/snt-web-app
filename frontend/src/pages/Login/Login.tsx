@@ -1,9 +1,9 @@
 import { ChangeEvent, FC, useState } from "react";
 import { Container } from "../../components/Container/Container";
+import { Form } from "../../components/Form/Form";
 import { Input } from "../../components/Input/Input";
 import { LoginUser } from "../../graphql/dto/loginUser";
 import { getAuth } from "./getAuth";
-import classes from "./Login.module.scss";
 
 export const Login: FC = () => {
   const [loginFields, setLoginFields] = useState<LoginUser>({
@@ -27,19 +27,10 @@ export const Login: FC = () => {
 
   return (
     <Container>
-      <form className={classes.login}>
+      <Form btnText="Войти" onClick={getUser}>
         <Input title="Логин" value={loginFields.email} onChange={changeLogin} type="text" />
         <Input title="Пароль" value={loginFields.password} onChange={changePassword} type="password" />
-        <button
-          type="submit"
-          onClick={(event) => {
-            event.preventDefault();
-            getUser();
-          }}
-        >
-          Войти
-        </button>
-      </form>
+      </Form>
     </Container>
   );
 };
