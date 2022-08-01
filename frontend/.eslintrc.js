@@ -33,7 +33,12 @@ module.exports = {
     ],
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/no-use-before-define": "error",
-
+    "react/require-default-props": [
+      0,
+      {
+        forbidDefaultForRequired: false,
+      },
+    ],
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/destructuring-assignment": 0,
     // "react/jsx-max-props-per-line": [1, { maximum: 1 }], //it doesn't work with prettier, you can remove prettier from rules: 'prettier/prettier'...
