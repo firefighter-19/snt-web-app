@@ -9,7 +9,7 @@ interface Props {
 
 export const Form: FC<Props> = ({ children, btnText, onClick }) => (
   <form className={classes.form}>
-    {children}
+    <div className={classes.form__children}>{children}</div>
     <button
       type="submit"
       onClick={(event) => {
