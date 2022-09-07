@@ -1,64 +1,77 @@
-import { ChangeEvent, FC, useState } from "react";
-import { Container } from "../../components/Container/Container";
-import { Form } from "../../components/Form/Form";
-import { Input } from "../../components/Input/Input";
-import { Register } from "../../graphql/dto/registerUser";
-import { getRegistered } from "./getRegistered";
+import { FC } from "react";
+import { useForm } from "react-hook-form";
+import { Error } from "src/components/common/Error/Error";
+// import { Select } from "src/components/common/Select/Select";
+import { Container } from "src/components/Container/Container";
+import { Form } from "src/components/Form/Form";
+import { Input } from "src/components/common/Input/Input";
+import { Register } from "src/graphql/dto/registerUser";
+// import { getRegistered } from "./getRegistered";
 
-enum RegisterFields {
-  NAME = "Имя",
-  LAST_NAME = "Фамилия",
-  EMAIL = "Электронный адрес",
-  PASSWORD = "Пароль",
-  SITE_NUMBER = "Номер участка",
-}
+// enum RegisterFields {
+//   NAME = "Имя",
+//   LAST_NAME = "Фамилия",
+//   EMAIL = "Электронный адрес",
+//   PASSWORD = "Пароль",
+//   SITE_NUMBER = "Номер участка",
+// }
 
 export const Registration: FC = () => {
-  const [registerFields, setRegisterFields] = useState<Register>({
-    email: "",
-    password: "",
-    name: "",
-    lastName: "",
-    siteNumber: null,
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Register>({
+    defaultValues: {
+      email: "",
+      password: "",
+      name: "",
+      lastName: "",
+      siteNumber: [],
+    },
   });
 
-  const { register } = getRegistered({
-    email: registerFields.email.trim(),
-    password: registerFields.password.trim(),
-    name: registerFields.name.trim(),
-    lastName: registerFields.lastName.trim(),
-    siteNumber: Number(registerFields.siteNumber),
-  });
+  const onSubmit = (data: Register) => {
+    console.log(data);
+  };
 
-  const changeData = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    const { value, title } = target;
-
-    const field = {
-      [RegisterFields.NAME]: "name",
-      [RegisterFields.LAST_NAME]: "lastName",
-      [RegisterFields.EMAIL]: "email",
-      [RegisterFields.PASSWORD]: "password",
-      [RegisterFields.SITE_NUMBER]: valid ? "siteNumber" : "",
-    };
-    setRegisterFields((prevState) => ({ ...prevState, [field[title as keyof typeof field]]: value }));
+  const getSiteNumbers = () => {
+    // TODO Temporary
+    const sites = [];
+    for (let i = 1; i <= 73; i++) {
+      sites.push(i);
+    }
+    return sites;
   };
 
   return (
     <Container>
-      <Form btnText="Зарегистрироваться" onClick={() => console.log(registerFields)}>
-        <Input title="Электронный адрес" value={registerFields.email} onChange={changeData} type="email" required />
+      <Form btnText="Зарегистрироваться" onClick={handleSubmit(onSubmit)}>
+        <Input
+          title="Электронный адрес"
+          label="email"
+          type="email"
+          required
+          register={register}
+          pattern={{
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Неверный формат электронного адреса",
+          }}
+        />
+        {errors.email?.type === "required" && <Error message="Не указан электронный адрес!" />}
+        {errors.email?.message && <Error message={`${errors.email.message}!`} />}
         <Input
           title="Пароль"
-          value={registerFields.password}
-          onChange={changeData}
+          label="password"
           type="password"
           autoComplete="true"
           required
+          register={register}
+          minLength={7}
         />
-        <Input title="Имя" value={registerFields.name} onChange={changeData} type="text" required />
-        <Input title="Фамилия" value={registerFields.lastName} onChange={changeData} type="text" required />
-        <Input title="Номер участка" value={registerFields.siteNumber} onChange={changeData} type="text" required />
+        <Input title="Имя" label="name" type="text" required register={register} />
+        <Input title="Фамилия" label="lastName" type="text" required register={register} />
+        {/* <Select options={getSiteNumbers()} /> */}
       </Form>
     </Container>
   );
