@@ -8,7 +8,6 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Response } from 'express';
 import { Observable, tap } from 'rxjs';
-import { AuthService } from '../auth.service';
 
 interface QueryFields {
   res: Response;
@@ -16,7 +15,6 @@ interface QueryFields {
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private authService: AuthService) {}
   intercept(
     context: ExecutionContext,
     next: CallHandler<UserEntity>,
