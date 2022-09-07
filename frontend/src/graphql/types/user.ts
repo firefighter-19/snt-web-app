@@ -1,5 +1,4 @@
 import { Role } from "./role";
-import { RefreshToken } from "./token";
 
 export interface User {
   id: string;
@@ -9,8 +8,7 @@ export interface User {
   siteNumber: number;
   createdAt?: Date;
   updatedAt?: Date;
-  role?: Role[];
-  token: RefreshToken;
+  role: Role[];
 }
 
 export interface LoggedUser {
