@@ -3,5 +3,5 @@ export interface Register {
   lastName: string;
   email: string;
   password: string;
-  siteNumber: number | null;
+  siteNumber: number[];
 }
