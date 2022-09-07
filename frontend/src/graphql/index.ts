@@ -4,19 +4,20 @@ const authMiddleware = new ApolloLink((operation, forward) =>
   forward(operation).map((response) => {
     const context = operation.getContext();
     const authHeader: string = context.response.headers.get("X-Auth-Token");
-    const refreshToken = window.localStorage.getItem("refreshToken");
-    if (!refreshToken) {
-      window.localStorage.setItem("refreshToken", authHeader);
+    const [name, token] = document.cookie.split("=");
+    if (name !== "refreshToken" && !token) {
+      document.cookie = `refreshToken=${authHeader}`;
     }
     return response;
   })
 );
 
 const activityMiddleware = new ApolloLink((operation, forward) => {
+  const [_, token] = document.cookie.split("=");
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      "X-Auth-Token": localStorage.getItem("refreshToken") || "",
+      "X-Auth-Token": token,
     },
   }));
   return forward(operation);
