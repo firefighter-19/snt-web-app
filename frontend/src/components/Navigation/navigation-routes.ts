@@ -1,8 +1,4 @@
-import { RoleType } from "../../graphql/types/role";
-
-const IS_USER_ADMIN = window.localStorage.getItem(`Role: ${RoleType.ADMIN}`);
-
-const defaultRoutes = [
+export const defaultRoutes = [
   {
     to: "/",
     title: "Домой",
@@ -32,13 +28,3 @@ const defaultRoutes = [
     title: "Контакты",
   },
 ];
-
-export const checkedRoutes = IS_USER_ADMIN
-  ? [
-      ...defaultRoutes,
-      {
-        to: "/settings",
-        title: "Настройки",
-      },
-    ]
-  : defaultRoutes;

@@ -5,8 +5,8 @@ const authMiddleware = new ApolloLink((operation, forward) =>
     const context = operation.getContext();
     const authHeader: string = context.response.headers.get("X-Auth-Token");
     const [name, token] = document.cookie.split("=");
-    if (name !== "refreshToken" && !token) {
-      document.cookie = `refreshToken=${authHeader}`;
+    if (name !== "refreshToken" || !token || token === "null") {
+      document.cookie = `refreshToken=${authHeader}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
     }
     return response;
   })

@@ -89,7 +89,8 @@ export class AuthService {
       });
       if (!user) {
         throw new UnauthorizedException({
-          message: 'User is not authorized',
+          name: 'Token error',
+          message: 'Token is not valid',
         });
       }
       const tokens = this.generateUserToken(user);

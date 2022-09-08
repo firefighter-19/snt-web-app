@@ -5,9 +5,10 @@ import { AccountQuery } from "src/pages/Account/AccoutQuery";
 import { SntContext } from "src/context/snt_context";
 import { UserInfo } from "src/graphql/types/user";
 import { AccountPreview } from "src/pages/Account/Preview";
+import { RoleType } from "src/graphql/types/role";
+import { defaultRoutes } from "./navigation-routes";
 
 import classes from "./NavBar.module.scss";
-import { checkedRoutes } from "./navigation-routes";
 
 const SuccessLoad = ({ getUser }: UserInfo) => {
   const { removeTokenInfo } = useContext(SntContext);
@@ -39,21 +40,34 @@ const UnAuthNav = () => (
   </>
 );
 
-export const NavBar: FC = () => (
-  <nav className={classes.navbar__container}>
-    <div className={classes.navbar__list_left}>
-      {checkedRoutes.map((navRoute) => (
-        <NavLink key={navRoute.title} to={navRoute.to} className={classes.navbar__list_link}>
-          {navRoute.title}
-        </NavLink>
-      ))}
-    </div>
-    <div className={classes.navbar__list_right}>
-      {window.localStorage.getItem("userId") ? (
-        <AccountQuery ChildComponent={SuccessLoad} ErrorComponent={UnAuthNav} />
-      ) : (
-        <UnAuthNav />
-      )}
-    </div>
-  </nav>
-);
+export const NavBar: FC = () => {
+  const { state } = useContext(SntContext);
+  const IS_USER_ADMIN = window.localStorage.getItem(`Role: ${RoleType.ADMIN}`);
+  const checkedRoutes = IS_USER_ADMIN
+    ? [
+        ...defaultRoutes,
+        {
+          to: "/settings",
+          title: "Настройки",
+        },
+      ]
+    : defaultRoutes;
+  return (
+    <nav className={classes.navbar__container}>
+      <div className={classes.navbar__list_left}>
+        {checkedRoutes.map((navRoute) => (
+          <NavLink key={navRoute.title} to={navRoute.to} className={classes.navbar__list_link}>
+            {navRoute.title}
+          </NavLink>
+        ))}
+      </div>
+      <div className={classes.navbar__list_right}>
+        {window.localStorage.getItem("userId") || state.token.length ? (
+          <AccountQuery ChildComponent={SuccessLoad} ErrorComponent={UnAuthNav} />
+        ) : (
+          <UnAuthNav />
+        )}
+      </div>
+    </nav>
+  );
+};
