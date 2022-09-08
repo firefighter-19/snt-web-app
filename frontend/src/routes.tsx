@@ -15,7 +15,8 @@ export interface Routes {
   path: string;
 }
 
-const returnPreview = ({ getUser }: UserInfo) => <Account getUser={getUser} />;
+const AccountInfo = ({ getUser }: UserInfo) => <Account getUser={getUser} />;
+const ErrorInfo = () => <p>Произошла ошибка загрузки пользователя, обновите страницу</p>;
 
 export const mainRoutes: Routes[] = [
   {
@@ -61,7 +62,7 @@ export const mainRoutes: Routes[] = [
   {
     id: "11",
     path: "/account",
-    element: <AccountQuery ChildComponent={returnPreview} />,
+    element: <AccountQuery ChildComponent={AccountInfo} ErrorComponent={ErrorInfo} />,
   },
   {
     id: "12",
